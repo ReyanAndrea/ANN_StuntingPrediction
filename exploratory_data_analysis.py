@@ -301,7 +301,7 @@ if len(numerical_cols) > 0:
     print("\n📊 Outlier Summary (IQR Method):")
     print(outlier_df.to_string(index=False))
 
-# ==================== 10. SUMMARY & RECOMMENDATIONS ====================
+# =================== 10. SUMMARY & RECOMMENDATIONS ===================
 print("\n\n" + "=" * 70)
 print("📋 SUMMARY & RECOMMENDATIONS")
 print("=" * 70)
@@ -336,4 +336,5 @@ print("   python train_model.py")
 
 print("\n" + "=" * 70)
 print("EDA COMPLETED! 🎉")
+
 print("=" * 70)
