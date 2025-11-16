@@ -200,7 +200,7 @@ if len(errors_df) > 0:
 else:
     print("No misclassifications! (Perfect model)")
 
-# ==================== 6. METRICS COMPARISON ====================
+# ===================== 6. METRICS COMPARISON =====================
 print("\n\n📊 STEP 6: METRICS COMPARISON")
 print("-" * 70)
 
@@ -312,4 +312,5 @@ print("DETAILED EVALUATION COMPLETED! 🎉")
 print("=" * 70)
 print("\n📊 Generated files:")
 print("   - confusion_matrix_detailed.png")
+
 print("   - metrics_comparison.png")
