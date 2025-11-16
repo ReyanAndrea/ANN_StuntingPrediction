@@ -201,7 +201,7 @@ Aplikasi akan terbuka di browser pada `http://localhost:8500`
 
 Di aplikasi web:
 1. Pilih jenis kelamin anak
-2. Input usia (1-5 tahun)
+2. Input usia (1-12 bulan)
 3. Input tinggi badan (cm)
 4. Input berat badan (kg)
 5. Klik tombol **"🔮 Prediksi Status Gizi"**
