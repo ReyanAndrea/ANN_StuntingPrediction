@@ -606,15 +606,10 @@ elif menu == "ℹ️ Tentang":
     3. Kementerian Kesehatan RI. (2023). Profil Kesehatan Indonesia
     4. Roesli et al. (2021). Artificial Neural Networks untuk Klasifikasi Status Gizi Anak
     
-    ### 📧 Kontak & Support
-    
-    Untuk informasi lebih lanjut, feedback, atau pelaporan bug:
-    - Silakan hubungi tim pengembang melalui email institusi
-    - Website Universitas Syiah Kuala: www.unsyiah.ac.id
-    
     ---
     
-    © 2025 NutriPredict - Universitas Syiah Kuala - Semua Hak Dilindungi
+    © 2025 NutriPredict - kelompok 1 - Project UAS mata kuliah Kecerdasan Artificial - Universitas Syiah Kuala - Semua Hak Dilindungi
     """)
     
     st.success("💡 Sistem ini dikembangkan sebagai bagian dari Project Akhir Mata Kuliah Kecerdasan Artificial - Prediksi Status Gizi Anak dengan Artificial Neural Network")
+
