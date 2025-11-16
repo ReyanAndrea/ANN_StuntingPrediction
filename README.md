@@ -150,15 +150,10 @@ Output Layer (4 neurons) + Softmax
 ### 1. Clone Repository
 ```bash
 git clone https://github.com/ReyanAndrea/ANN_StuntingPrediction.git
-cd nutripredict-stunting
+cd ANN_Stunting_Prediction
 ```
 
 ### 2. Install Dependencies
-```bash
-python -m pip install -r requirements.txt
-```
-
-Atau install manual:
 ```bash
 python -m pip install pandas numpy matplotlib seaborn scikit-learn imbalanced-learn tensorflow joblib streamlit plotly pillow
 ```
