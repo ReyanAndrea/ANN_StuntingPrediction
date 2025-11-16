@@ -104,36 +104,47 @@ st.sidebar.markdown("- Tasya Zahrani")
 st.sidebar.markdown("\n📍 Universitas Syiah Kuala")
 
 # ==================== FUNGSI REKOMENDASI ====================
-def get_recommendations(risk_level, probabilities):
-    """Generate personalized intervention recommendations"""
+def get_recommendations(status_gizi, probabilities):
+    """Generate personalized nutrition recommendations based on nutritional status"""
     recommendations = {
-        'Rendah': [
+        'Normal': [
+            "✅ Status gizi anak dalam kategori normal",
             "✅ Pertahankan pola makan bergizi seimbang",
-            "✅ Lanjutkan pemantauan pertumbuhan rutin setiap bulan",
-            "✅ Pastikan anak mendapat ASI eksklusif (jika < 6 bulan)",
-            "✅ Jaga kebersihan lingkungan dan sanitasi rumah",
-            "✅ Berikan imunisasi lengkap sesuai jadwal"
+            "✅ Terus pantau pertumbuhan secara rutin setiap bulan",
+            "✅ Pastikan anak mendapat cukup protein, karbohidrat, lemak, vitamin & mineral",
+            "✅ Jaga kebersihan makanan dan sanitasi lingkungan",
+            "✅ Lengkapi imunisasi sesuai jadwal"
         ],
-        'Sedang': [
-            "⚠️ Tingkatkan asupan protein (telur, ikan, daging, kacang-kacangan)",
-            "⚠️ Berikan vitamin dan mineral tambahan (Vitamin A, Zink, Zat Besi)",
-            "⚠️ Pemantauan pertumbuhan setiap 2 minggu",
-            "⚠️ Perbaiki sanitasi rumah (akses air bersih, toilet sehat)",
-            "⚠️ Konsultasi dengan ahli gizi untuk pola makan anak",
-            "⚠️ Evaluasi kondisi kesehatan (cek infeksi, cacingan)"
+        'Overweight': [
+            "⚠️ Status gizi anak dalam kategori overweight (berat badan berlebih)",
+            "⚠️ Kurangi asupan kalori berlebih (terutama makanan tinggi gula & lemak)",
+            "⚠️ Tingkatkan aktivitas fisik dan bermain anak",
+            "⚠️ Perbanyak konsumsi sayur dan buah-buahan",
+            "⚠️ Batasi konsumsi minuman manis dan makanan cepat saji",
+            "⚠️ Konsultasikan dengan ahli gizi untuk pola makan sehat"
         ],
-        'Tinggi': [
-            "🚨 SEGERA konsultasi ke dokter/ahli gizi!",
-            "🚨 Berikan makanan tambahan khusus (PMT)",
-            "🚨 Pemantauan intensif setiap minggu",
-            "🚨 Cek kesehatan menyeluruh (laboratorium lengkap)",
-            "🚨 Perbaikan sanitasi dan lingkungan PRIORITAS",
-            "🚨 Edukasi orang tua tentang pola asuh dan gizi",
-            "🚨 Program intervensi gizi terintegrasi",
-            "🚨 Follow-up rutin dengan tenaga kesehatan"
+        'Underweight': [
+            "🚨 Status gizi anak dalam kategori kurang gizi (underweight)",
+            "🚨 SEGERA tingkatkan asupan nutrisi anak",
+            "🚨 Berikan makanan tinggi kalori & protein (telur, ikan, daging, kacang, susu)",
+            "🚨 Berikan vitamin & mineral tambahan (Vitamin A, Zink, Zat Besi)",
+            "🚨 Pemantauan pertumbuhan setiap 2 minggu",
+            "🚨 Konsultasi dengan dokter/ahli gizi untuk intervensi gizi lanjutan",
+            "🚨 Perbaiki sanitasi rumah (akses air bersih, toilet sehat)",
+            "🚨 Cek kondisi kesehatan menyeluruh (ada infeksi atau cacingan?)"
+        ],
+        'Stunting': [
+            "🚨 STATUS KRITIS: Anak mengalami stunting (gizi buruk kronis)",
+            "🚨 SEGERA konsultasi ke dokter atau pusat kesehatan!",
+            "🚨 Berikan makanan tambahan khusus & program makanan bergizi (PMT)",
+            "🚨 Pemantauan intensif setiap minggu dengan tenaga kesehatan",
+            "🚨 Cek kesehatan menyeluruh (lab lengkap, cari infeksi penyebab)",
+            "🚨 Edukasi orang tua tentang pola asuh dan gizi anak",
+            "🚨 Perbaikan sanitasi & lingkungan rumah PRIORITAS UTAMA",
+            "🚨 Program intervensi gizi terintegrasi dengan dukungan pemerintah/desa"
         ]
     }
-    return recommendations.get(risk_level, [])
+    return recommendations.get(status_gizi, [])
 
 # ==================== PAGE: HOME ====================
 if menu == "🏠 Home":
@@ -161,14 +172,20 @@ if menu == "🏠 Home":
     
     st.markdown("### 🎯 Apa itu NutriPredict?")
     st.write("""
-    **NutriPredict** adalah sistem prediksi stunting berbasis **Artificial Neural Network (ANN)** 
-    yang dapat memprediksi risiko stunting pada anak **6-12 bulan ke depan**.
+    **NutriPredict** adalah sistem prediksi status gizi berbasis **Artificial Neural Network (ANN)** 
+    yang dapat memprediksi status gizi anak berdasarkan data antropometri (ukuran tubuh).
     
-    Sistem ini mengintegrasikan berbagai faktor seperti:
-    - 🍎 **Status Gizi Anak** (berat, tinggi, ASI eksklusif)
-    - 💰 **Kondisi Ekonomi Keluarga**
-    - 🚰 **Sanitasi dan Lingkungan**
-    - 📚 **Pendidikan Orang Tua**
+    Sistem ini dapat mengklasifikasikan anak ke dalam 4 kategori status gizi:
+    - 🟢 **Normal** - Status gizi sesuai standar WHO
+    - 🟡 **Overweight** - Berat badan berlebih
+    - 🔴 **Underweight** - Gizi kurang (berat badan kurang)
+    - 🔴 **Stunting** - Gizi buruk kronis (tinggi badan kurang)
+    
+    Data yang digunakan untuk prediksi:
+    - 👶 **Umur Anak** (bulan)
+    - 👫 **Jenis Kelamin**
+    - 📏 **Tinggi Badan** (cm)
+    - ⚖️ **Berat Badan** (kg)
     """)
     
     st.markdown("### 🚀 Fitur Utama")
@@ -176,32 +193,32 @@ if menu == "🏠 Home":
     
     with col1:
         st.markdown("""
-        **🔮 Prediksi Risiko**
-        - Prediksi tingkat risiko: Rendah, Sedang, Tinggi
+        **🔮 Prediksi Status Gizi**
+        - Klasifikasi ke 4 kategori: Normal, Overweight, Underweight, Stunting
         - Skor probabilitas untuk setiap kategori
-        - Analisis berbasis data multidimensi
+        - Analisis berbasis data antropometri
         
         **💡 Rekomendasi Personal**
-        - Saran intervensi sesuai tingkat risiko
-        - Panduan gizi dan pola asuh
-        - Langkah perbaikan sanitasi
+        - Saran nutrisi sesuai status gizi
+        - Panduan intervensi gizi yang tepat
+        - Langkah monitoring kesehatan anak
         """)
     
     with col2:
         st.markdown("""
         **📊 Dashboard Monitoring**
-        - Visualisasi distribusi risiko
-        - Tracking efektivitas intervensi
-        - Statistik anak berisiko per wilayah
+        - Visualisasi distribusi status gizi
+        - Tracking efektivitas program
+        - Statistik per wilayah/daerah
         
         **📈 Evaluasi Model**
         - Confusion Matrix
         - Precision, Recall, F1-Score
-        - Analisis performa model
+        - Analisis performa klasifikasi
         """)
     
     st.markdown("---")
-    st.info("💡 **Tip:** Mulai dengan menu 'Prediksi Stunting' untuk memprediksi risiko stunting anak!")
+    st.info("💡 **Tip:** Mulai dengan menu 'Prediksi Stunting' untuk memprediksi status gizi anak!")
 
 # ==================== PAGE: PREDIKSI STUNTING ====================
 elif menu == "🔮 Prediksi Stunting":
@@ -212,7 +229,7 @@ elif menu == "🔮 Prediksi Stunting":
         st.stop()
     
     st.markdown("### 📝 Input Data Anak")
-    st.info("Masukkan data anak untuk memprediksi risiko stunting")
+    st.info("Masukkan data anak untuk memprediksi status gizi/risiko stunting")
     
     # Create form
     with st.form("prediction_form"):
@@ -220,153 +237,160 @@ elif menu == "🔮 Prediksi Stunting":
         
         with col1:
             st.markdown("#### 👶 Data Anak")
-            age = st.number_input("Umur (bulan)", min_value=0, max_value=60, value=12)
-            gender = st.selectbox("Jenis Kelamin", ["Laki-laki", "Perempuan"])
-            height = st.number_input("Tinggi Badan (cm)", min_value=40.0, max_value=120.0, value=75.0, step=0.1)
-            weight = st.number_input("Berat Badan (kg)", min_value=2.0, max_value=25.0, value=9.0, step=0.1)
-            birth_weight = st.number_input("Berat Lahir (kg)", min_value=1.0, max_value=5.0, value=3.0, step=0.1)
-            breastfeeding = st.selectbox("ASI Eksklusif", ["Ya", "Tidak"])
+            age = st.number_input("Umur (bulan)", min_value=0, max_value=120, value=12)
+            gender = st.selectbox("Jenis Kelamin", ["Male", "Female"])
+            height = st.number_input("Tinggi Badan (cm)", min_value=40.0, max_value=150.0, value=75.0, step=0.1)
+            weight = st.number_input("Berat Badan (kg)", min_value=1.0, max_value=30.0, value=9.0, step=0.1)
         
         with col2:
-            st.markdown("#### 👨‍👩‍👧 Data Keluarga")
-            maternal_education = st.selectbox(
-                "Pendidikan Ibu",
-                ["SD", "SMP", "SMA", "Diploma/Sarjana"]
-            )
-            household_income = st.selectbox(
-                "Pendapatan Keluarga",
-                ["Rendah (< 2 juta)", "Menengah (2-5 juta)", "Tinggi (> 5 juta)"]
-            )
-            sanitation = st.selectbox(
-                "Akses Sanitasi",
-                ["Baik (Air bersih + toilet sehat)", "Sedang", "Buruk"]
-            )
-            water_source = st.selectbox(
-                "Sumber Air",
-                ["PDAM/Air Kemasan", "Sumur", "Sungai/Tidak Layak"]
-            )
+            st.markdown("#### 📊 Info Tambahan")
+            st.markdown("*Kolom ini sesuai dengan fitur dalam model pelatihan*")
+            st.info("Pastikan nilai Age, Height, dan Weight sudah benar sebelum prediksi")
         
-        submitted = st.form_submit_button("🔮 Prediksi Risiko", use_container_width=True)
+        submitted = st.form_submit_button("🔮 Prediksi Status Gizi", use_container_width=True)
     
     if submitted:
-        # Prepare input data (disesuaikan dengan feature_names dari training)
-        # CATATAN: Ini adalah contoh, sesuaikan dengan kolom dataset asli
-        input_data = {
-            'Age_months': age,
-            'Gender': 1 if gender == "Laki-laki" else 0,
-            'Height_cm': height,
-            'Weight_kg': weight,
-            'Birth_Weight_kg': birth_weight,
-            'Breastfeeding': 1 if breastfeeding == "Ya" else 0,
-            'Maternal_Education': ["SD", "SMP", "SMA", "Diploma/Sarjana"].index(maternal_education),
-            'Household_Income': ["Rendah (< 2 juta)", "Menengah (2-5 juta)", "Tinggi (> 5 juta)"].index(household_income),
-            'Sanitation': ["Buruk", "Sedang", "Baik (Air bersih + toilet sehat)"].index(sanitation),
-            'Water_Source': ["Sungai/Tidak Layak", "Sumur", "PDAM/Air Kemasan"].index(water_source)
-        }
-        
-        # Convert to DataFrame
-        input_df = pd.DataFrame([input_data])
-        
-        # Ensure all features from training are present
-        for feature in feature_names:
-            if feature not in input_df.columns:
-                input_df[feature] = 0  # Default value untuk missing features
-        
-        # Reorder columns to match training
-        input_df = input_df[feature_names]
-        
-        # Scale input
-        input_scaled = scaler.transform(input_df)
-        
-        # Predict
-        prediction_proba = model.predict(input_scaled, verbose=0)[0]
-        prediction_class = np.argmax(prediction_proba)
-        risk_level = target_encoder.inverse_transform([prediction_class])[0]
-        
-        # Display results
-        st.markdown("---")
-        st.markdown("### 🎯 Hasil Prediksi")
-        
-        # Risk Level Card
-        risk_colors = {
-            'Rendah': 'risk-low',
-            'Sedang': 'risk-medium',
-            'Tinggi': 'risk-high'
-        }
-        risk_icons = {
-            'Rendah': '✅',
-            'Sedang': '⚠️',
-            'Tinggi': '🚨'
-        }
-        
-        st.markdown(f"<div class='{risk_colors.get(risk_level, 'risk-low')}'>", unsafe_allow_html=True)
-        st.markdown(f"## {risk_icons.get(risk_level, '❓')} Tingkat Risiko: **{risk_level.upper()}**")
-        st.markdown(f"**Probabilitas:** {prediction_proba[prediction_class]*100:.2f}%")
-        st.markdown("</div>", unsafe_allow_html=True)
-        
-        # Probability Distribution
-        st.markdown("#### 📊 Distribusi Probabilitas")
-        prob_df = pd.DataFrame({
-            'Kategori': target_encoder.classes_,
-            'Probabilitas': prediction_proba * 100
-        })
-        
-        fig = px.bar(
-            prob_df,
-            x='Kategori',
-            y='Probabilitas',
-            color='Kategori',
-            color_discrete_map={'Rendah': '#28a745', 'Sedang': '#ffc107', 'Tinggi': '#dc3545'},
-            text='Probabilitas'
-        )
-        fig.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
-        fig.update_layout(showlegend=False, height=400)
-        st.plotly_chart(fig, use_container_width=True)
-        
-        # Recommendations
-        st.markdown("### 💡 Rekomendasi Intervensi")
-        recommendations = get_recommendations(risk_level, prediction_proba)
-        
-        for rec in recommendations:
-            st.markdown(f"- {rec}")
-        
-        # Download Report
-        st.markdown("---")
-        report = f"""
-LAPORAN PREDIKSI STUNTING - NutriPredict
-==========================================
+        try:
+            # Validate input
+            if age < 0 or age > 120:
+                st.error("❌ Umur harus antara 0-120 bulan")
+                st.stop()
+            if height < 40 or height > 150:
+                st.error("❌ Tinggi badan harus antara 40-150 cm")
+                st.stop()
+            if weight < 1 or weight > 30:
+                st.error("❌ Berat badan harus antara 1-30 kg")
+                st.stop()
+            
+            # Prepare input data sesuai dengan feature_names dari training
+            input_data = {
+                'Sex': 1 if gender == "Male" else 0,
+                'Age': age,
+                'Height': height,
+                'Weight': weight
+            }
+            
+            # Convert to DataFrame
+            input_df = pd.DataFrame([input_data])
+            
+            # Ensure all features from training are present dengan order yang benar
+            for feature in feature_names:
+                if feature not in input_df.columns:
+                    input_df[feature] = 0  # Default value untuk missing features
+            
+            # Reorder columns to match training
+            input_df = input_df[feature_names]
+            
+            # Scale input
+            input_scaled = scaler.transform(input_df)
+            
+            # Predict
+            prediction_proba = model.predict(input_scaled, verbose=0)[0]
+            prediction_class = np.argmax(prediction_proba)
+            risk_level = target_encoder.inverse_transform([prediction_class])[0]
+            
+            # Display results
+            st.markdown("---")
+            st.markdown("### 🎯 Hasil Prediksi")
+            
+            # Status Card with color coding
+            status_colors = {
+                'Underweight': 'risk-high',
+                'Stunting': 'risk-high',
+                'Normal': 'risk-low',
+                'Overweight': 'risk-medium'
+            }
+            status_icons = {
+                'Underweight': '🚨',
+                'Stunting': '🚨',
+                'Normal': '✅',
+                'Overweight': '⚠️'
+            }
+            
+            st.markdown(f"<div class='{status_colors.get(risk_level, 'risk-low')}'>", unsafe_allow_html=True)
+            st.markdown(f"## {status_icons.get(risk_level, '❓')} Status Gizi: **{risk_level.upper()}**")
+            st.markdown(f"**Probabilitas:** {prediction_proba[prediction_class]*100:.2f}%")
+            st.markdown("</div>", unsafe_allow_html=True)
+            
+            # Probability Distribution
+            st.markdown("#### 📊 Distribusi Probabilitas Semua Kategori")
+            prob_df = pd.DataFrame({
+                'Status': target_encoder.classes_,
+                'Probabilitas': prediction_proba * 100
+            })
+            
+            fig = px.bar(
+                prob_df,
+                x='Status',
+                y='Probabilitas',
+                color='Status',
+                color_discrete_map={
+                    'Normal': '#28a745',
+                    'Overweight': '#ffc107',
+                    'Underweight': '#dc3545',
+                    'Stunting': '#c82333'
+                },
+                text='Probabilitas'
+            )
+            fig.update_traces(texttemplate='%{text:.2f}%', textposition='outside')
+            fig.update_layout(showlegend=False, height=400)
+            st.plotly_chart(fig, use_container_width=True)
+            
+            # Show input data summary
+            st.markdown("#### 📋 Data Input yang Digunakan")
+            input_summary = pd.DataFrame({
+                'Parameter': ['Umur', 'Jenis Kelamin', 'Tinggi Badan', 'Berat Badan'],
+                'Nilai': [f'{age} bulan', gender, f'{height} cm', f'{weight} kg']
+            })
+            st.dataframe(input_summary, use_container_width=True, hide_index=True)
+            
+            # Recommendations berdasarkan status gizi
+            st.markdown("### 💡 Rekomendasi & Penjelasan")
+            recommendations = get_recommendations(risk_level, prediction_proba)
+            
+            for rec in recommendations:
+                st.markdown(f"- {rec}")
+            
+            # Download Report
+            st.markdown("---")
+            report = f"""
+LAPORAN PREDIKSI STATUS GIZI - NutriPredict
+============================================
 
 DATA ANAK:
 - Umur: {age} bulan
 - Jenis Kelamin: {gender}
 - Tinggi Badan: {height} cm
 - Berat Badan: {weight} kg
-- Berat Lahir: {birth_weight} kg
-- ASI Eksklusif: {breastfeeding}
-
-DATA KELUARGA:
-- Pendidikan Ibu: {maternal_education}
-- Pendapatan: {household_income}
-- Sanitasi: {sanitation}
-- Sumber Air: {water_source}
 
 HASIL PREDIKSI:
-- Tingkat Risiko: {risk_level.upper()}
+- Status Gizi: {risk_level.upper()}
 - Probabilitas: {prediction_proba[prediction_class]*100:.2f}%
 
+DISTRIBUSI PROBABILITAS:
+"""
+            for i, class_name in enumerate(target_encoder.classes_):
+                report += f"- {class_name}: {prediction_proba[i]*100:.2f}%\n"
+            
+            report += f"""
 REKOMENDASI INTERVENSI:
 {chr(10).join(['- ' + rec for rec in recommendations])}
 
-==========================================
+============================================
 Tanggal: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S')}
-        """
+Sistem: NutriPredict ANN
+            """
+            
+            st.download_button(
+                label="📥 Download Laporan",
+                data=report,
+                file_name=f"laporan_prediksi_status_gizi_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                mime="text/plain"
+            )
         
-        st.download_button(
-            label="📥 Download Laporan",
-            data=report,
-            file_name=f"laporan_prediksi_stunting_{pd.Timestamp.now().strftime('%Y%m%d_%H%M%S')}.txt",
-            mime="text/plain"
-        )
+        except Exception as e:
+            st.error(f"❌ Terjadi kesalahan saat prediksi: {str(e)}")
+            st.info("Pastikan model sudah dilatih dengan benar. Jalankan train_model.py terlebih dahulu.")
 
 # ==================== PAGE: EVALUASI MODEL ====================
 elif menu == "📊 Evaluasi Model":
@@ -437,8 +461,8 @@ elif menu == "📊 Evaluasi Model":
             col2.metric("False Positives", fp)
             col3.metric("False Negatives", fn)
             
-            if class_name == 'Tinggi' and fn > 0:
-                st.error(f"⚠️ CRITICAL: {fn} anak berisiko TINGGI diprediksi lebih rendah! Mereka butuh intervensi segera.")
+            if class_name in ['Stunting', 'Underweight'] and fn > 0:
+                st.error(f"⚠️ CRITICAL: {fn} anak dengan status '{class_name}' diprediksi salah! Mereka butuh perhatian khusus.")
     
     # Training History (if available)
     try:
@@ -540,24 +564,32 @@ elif menu == "ℹ️ Tentang":
     ### 🎯 Tujuan Sistem
     
     **NutriPredict** dikembangkan untuk:
-    1. Memprediksi risiko stunting 6-12 bulan ke depan
-    2. Memberikan rekomendasi intervensi dini yang personal
-    3. Membantu tenaga kesehatan melakukan deteksi dini lebih efektif
+    1. Memprediksi status gizi anak berdasarkan data antropometri
+    2. Memberikan rekomendasi intervensi gizi yang personal dan tepat sasaran
+    3. Membantu tenaga kesehatan melakukan deteksi dini malnutrisi
     4. Mendukung program nasional penurunan stunting hingga target 14%
     
-    ### 🧠 Teknologi
+    ### 🧠 Teknologi & Metodologi
     
     - **Model:** Artificial Neural Network (ANN) / Multilayer Perceptron (MLP)
     - **Framework:** TensorFlow/Keras
+    - **Arsitektur:** 
+      - Input Layer (4 fitur: Age, Sex, Height, Weight)
+      - Hidden Layer 1 (128 neuron, ReLU, Dropout 0.3)
+      - Hidden Layer 2 (64 neuron, ReLU, Dropout 0.3)
+      - Hidden Layer 3 (32 neuron, ReLU, Dropout 0.2)
+      - Output Layer (4 neuron, Softmax untuk klasifikasi multi-kelas)
     - **Handling Imbalance:** SMOTE + Class Weighting
     - **Evaluasi:** Confusion Matrix, Precision, Recall, F1-Score
     - **Frontend:** Streamlit
     
     ### 📊 Dataset
     
-    Dataset yang digunakan: **Stunting Dataset Indonesia** dari Kaggle
-    - Berisi indikator gizi, sosial ekonomi, dan kesehatan anak
-    - Data dari berbagai wilayah di Indonesia
+    Dataset yang digunakan: **Child Growth and Nutrition Dataset** dari Kaggle
+    - Berisi data antropometri anak (Age, Height, Weight)
+    - Jenis Kelamin dan Status Gizi dari berbagai negara
+    - Total data: 1000+ records
+    - Pembagian data: 80% training, 20% testing
     
     ### 👥 Tim Pengembang
     
@@ -569,18 +601,20 @@ elif menu == "ℹ️ Tentang":
     
     ### 📚 Referensi
     
-    1. Kementerian Kesehatan RI. (2023). Profil Kesehatan Indonesia 2023
-    2. WHO. (2021). Child Growth Standards
-    3. UNICEF. (2020). State of the World's Children 2020
-    4. Putri & Ardiansyah. (2022). Penerapan ANN untuk Prediksi Gizi Anak Balita
+    1. WHO. (2021). Child Growth Standards and Anthropometric Indices
+    2. UNICEF. (2023). Global Nutrition Report
+    3. Kementerian Kesehatan RI. (2023). Profil Kesehatan Indonesia
+    4. Roesli et al. (2021). Artificial Neural Networks untuk Klasifikasi Status Gizi Anak
     
-    ### 📧 Kontak
+    ### 📧 Kontak & Support
     
-    Untuk informasi lebih lanjut atau feedback, silakan hubungi tim pengembang melalui email institusi.
+    Untuk informasi lebih lanjut, feedback, atau pelaporan bug:
+    - Silakan hubungi tim pengembang melalui email institusi
+    - Website Universitas Syiah Kuala: www.unsyiah.ac.id
     
     ---
     
-    © 2025 NutriPredict - Universitas Syiah Kuala
+    © 2025 NutriPredict - Universitas Syiah Kuala - Semua Hak Dilindungi
     """)
     
-    st.success("💡 Sistem ini dikembangkan sebagai bagian dari Project Akhir Mata Kuliah Kecerdasan Artificial")
+    st.success("💡 Sistem ini dikembangkan sebagai bagian dari Project Akhir Mata Kuliah Kecerdasan Artificial - Prediksi Status Gizi Anak dengan Artificial Neural Network")
