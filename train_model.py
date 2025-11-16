@@ -1,7 +1,7 @@
 """
 NutriPredict - Sistem Prediksi Stunting dengan ANN/MLP
 Training Script dengan Evaluasi Lengkap (Confusion Matrix, Handling Imbalance)
-Dataset: Stunting Dataset Indonesia (Kaggle)
+Dataset: Kategori stunting bayi (Kaggle)
 """
 
 import pandas as pd
@@ -369,3 +369,4 @@ print(f"   Avg Precision: {precision.mean():.4f}")
 print(f"   Avg Recall: {recall.mean():.4f}")
 print(f"   Avg F1-Score: {f1.mean():.4f}")
 print("\n🎯 Next Step: Run streamlit_app.py untuk demo prediksi!")
+
