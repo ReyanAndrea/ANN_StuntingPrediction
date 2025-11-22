@@ -495,39 +495,102 @@ elif menu == "📊 Evaluasi Model":
 elif menu == "📈 Dashboard Monitoring":
     st.markdown("<div class='main-header'>📈 Dashboard Monitoring</div>", unsafe_allow_html=True)
     
-    # Generate dummy data for demo
-    np.random.seed(42)
-    n_samples = 500
+    try:
+        df_kemenkes = pd.read_csv('data-stunting2022.csv')
+
+        if 'tahun' in df_kemenkes.columns:
+            df_kemenkes = df_kemenkes[df_kemenkes['tahun'] == 2022]
+
+        df_kemenkes = df_kemenkes.rename(columns={
+            'kemendagri_nama_kabupaten_kota': 'Wilayah',
+            'jenis_stunting': 'Jenis',
+            'jumlah': 'Jumlah',
+            'tahun': 'Tahun',
+            'bulan': 'Bulan'
+        })
+
+        df_kemenkes['Status_Gizi'] = df_kemenkes['Jenis'].astype(str)
+
+        def jenis_to_risiko(j):
+            s = str(j).lower()
+            if 'stunt' in s or 'stunting' in s:
+                return 'Tinggi'
+            if 'under' in s or 'underweight' in s or 'kurang' in s:
+                return 'Tinggi'
+            if 'over' in s or 'overweight' in s or 'lebih' in s:
+                return 'Sedang'
+            return 'Sedang'
+
+        df_kemenkes['Risiko'] = df_kemenkes['Jenis'].apply(jenis_to_risiko)
+
+        demo_data = df_kemenkes[['Wilayah', 'Risiko', 'Status_Gizi', 'Jumlah', 'Bulan', 'Tahun']].copy()
+        demo_data = demo_data.rename(columns={'Wilayah': 'Nama'})
+
+    except Exception:
+        try:
+            df_raw = pd.read_csv('child_data_rev.csv')
+            df_raw = df_raw.rename(columns={
+                'Name': 'Nama', 'Age': 'Umur', 'Status': 'Status_Gizi'
+            })
+            if 'Wilayah' not in df_raw.columns:
+                df_raw['Wilayah'] = 'Unknown'
+            def map_risiko(status):
+                s = str(status).lower()
+                if 'stunt' in s or 'under' in s or 'kurang' in s:
+                    return 'Tinggi'
+                if 'over' in s or 'lebih' in s:
+                    return 'Sedang'
+                if 'normal' in s:
+                    return 'Rendah'
+                return 'Sedang'
+            df_raw['Risiko'] = df_raw['Status_Gizi'].apply(map_risiko)
+            demo_data = df_raw.rename(columns={'Umur': 'Umur (bulan)', 'Status_Gizi': 'Status_Gizi'})
+        except Exception:
+            np.random.seed(42)
+            n_samples = 500
+            demo_data = pd.DataFrame({
+                'Nama': [f"Anak-{i+1}" for i in range(n_samples)],
+                'Umur (bulan)': np.random.randint(0, 60, n_samples),
+                'Risiko': np.random.choice(['Rendah', 'Sedang', 'Tinggi'], n_samples, p=[0.5, 0.3, 0.2]),
+                'Wilayah': np.random.choice(['Aceh Besar', 'Banda Aceh', 'Aceh Utara', 'Aceh Barat', 'Pidie'], n_samples),
+                'Status_Gizi': np.random.choice(['Normal', 'Gizi Kurang', 'Gizi Buruk'], n_samples, p=[0.6, 0.25, 0.15])
+            })
     
-    demo_data = pd.DataFrame({
-        'Nama': [f"Anak-{i+1}" for i in range(n_samples)],
-        'Umur (bulan)': np.random.randint(0, 60, n_samples),
-        'Risiko': np.random.choice(['Rendah', 'Sedang', 'Tinggi'], n_samples, p=[0.5, 0.3, 0.2]),
-        'Wilayah': np.random.choice(['Aceh Besar', 'Banda Aceh', 'Aceh Utara', 'Aceh Barat', 'Pidie'], n_samples),
-        'Status_Gizi': np.random.choice(['Normal', 'Gizi Kurang', 'Gizi Buruk'], n_samples, p=[0.6, 0.25, 0.15])
-    })
-    
-    # Summary Metrics
-    st.markdown("### 📊 Ringkasan Statistik")
+    st.markdown("### 📊 Ringkasan Statistik Stunting di Aceh per tahun 2022")
     col1, col2, col3, col4 = st.columns(4)
-    
+
+    if 'Jumlah' in demo_data.columns:
+        total_count = int(demo_data['Jumlah'].sum())
+        tinggi_count = int(demo_data.loc[demo_data['Risiko'] == 'Tinggi', 'Jumlah'].sum())
+        sedang_count = int(demo_data.loc[demo_data['Risiko'] == 'Sedang', 'Jumlah'].sum())
+        rendah_count = int(demo_data.loc[demo_data['Risiko'] == 'Rendah', 'Jumlah'].sum())
+    else:
+        total_count = len(demo_data)
+        tinggi_count = len(demo_data[demo_data['Risiko'] == 'Tinggi'])
+        sedang_count = len(demo_data[demo_data['Risiko'] == 'Sedang'])
+        rendah_count = len(demo_data[demo_data['Risiko'] == 'Rendah'])
+
     with col1:
-        st.metric("Total Anak", len(demo_data))
+        st.metric("Total Anak / Kasus", total_count)
     with col2:
-        st.metric("Risiko Tinggi", len(demo_data[demo_data['Risiko'] == 'Tinggi']))
+        st.metric("Risiko Tinggi", tinggi_count)
     with col3:
-        st.metric("Risiko Sedang", len(demo_data[demo_data['Risiko'] == 'Sedang']))
+        st.metric("Risiko Sedang", sedang_count)
     with col4:
-        st.metric("Risiko Rendah", len(demo_data[demo_data['Risiko'] == 'Rendah']))
-    
+        st.metric("Risiko Rendah", rendah_count)
+
     st.markdown("---")
-    
+
     # Distribution Charts
     col1, col2 = st.columns(2)
-    
+
     with col1:
         st.markdown("#### 🎯 Distribusi Tingkat Risiko")
-        risk_counts = demo_data['Risiko'].value_counts()
+        if 'Jumlah' in demo_data.columns:
+            risk_counts = demo_data.groupby('Risiko')['Jumlah'].sum().reindex(['Rendah', 'Sedang', 'Tinggi']).fillna(0)
+        else:
+            risk_counts = demo_data['Risiko'].value_counts().reindex(['Rendah', 'Sedang', 'Tinggi']).fillna(0)
+
         fig = px.pie(
             values=risk_counts.values,
             names=risk_counts.index,
@@ -535,23 +598,35 @@ elif menu == "📈 Dashboard Monitoring":
             color_discrete_map={'Rendah': '#28a745', 'Sedang': '#ffc107', 'Tinggi': '#dc3545'}
         )
         st.plotly_chart(fig, use_container_width=True)
-    
+
     with col2:
         st.markdown("#### 📍 Risiko per Wilayah")
-        wilayah_risk = pd.crosstab(demo_data['Wilayah'], demo_data['Risiko'])
+        region_col = 'Wilayah' if 'Wilayah' in demo_data.columns else 'Nama'
+        if 'Jumlah' in demo_data.columns:
+            wilayah_risk = demo_data.pivot_table(index=region_col, columns='Risiko', values='Jumlah', aggfunc='sum').fillna(0)
+        else:
+            wilayah_risk = pd.crosstab(demo_data[region_col], demo_data['Risiko'])
+
         fig = px.bar(
             wilayah_risk,
             barmode='group',
             color_discrete_map={'Rendah': '#28a745', 'Sedang': '#ffc107', 'Tinggi': '#dc3545'}
         )
         st.plotly_chart(fig, use_container_width=True)
-    
+
     # Data Table
     st.markdown("---")
-    st.markdown("### 📋 Data Anak Berisiko Tinggi")
-    high_risk = demo_data[demo_data['Risiko'] == 'Tinggi'].head(20)
-    st.dataframe(high_risk, use_container_width=True)
-    
+    st.markdown("### 📋 Data Anak / Daerah Berisiko Tinggi")
+    if 'Jumlah' in demo_data.columns:
+        high_risk = demo_data[demo_data['Risiko'] == 'Tinggi'].sort_values('Jumlah', ascending=False).head(20)
+    else:
+        high_risk = demo_data[demo_data['Risiko'] == 'Tinggi'].head(20)
+
+    # Angka di sebelah nama wilayah adalah indeks baris (pandas DataFrame index) —
+    # biasanya muncul karena kita memfilter/menyortir sehingga index asli tetap.
+    # Reset index (tanpa menambahkan kolom baru) dan sembunyikan index di tampilan Streamlit.
+    st.dataframe(high_risk.reset_index(drop=True), use_container_width=True, hide_index=True)
+
     # Download
     csv = demo_data.to_csv(index=False)
     st.download_button(
