@@ -62,6 +62,12 @@ st.markdown("""
         border-radius: 0.5rem;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    [data-testid="stSidebar"] [data-testid="image"] {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -85,7 +91,7 @@ def load_model_artifacts():
 model, scaler, label_encoders, target_encoder, feature_names, metrics = load_model_artifacts()
 
 # ==================== SIDEBAR ====================
-st.sidebar.image("logo_informatika.png", width=100)
+st.sidebar.image("logo usk.png", width=100)
 st.sidebar.title("🎯 NutriPredict")
 st.sidebar.markdown("**Sistem Prediksi Stunting dengan ANN**")
 st.sidebar.markdown("---")
@@ -244,7 +250,6 @@ elif menu == "🔮 Prediksi Stunting":
         
         with col2:
             st.markdown("#### 📊 Info Tambahan")
-            st.markdown("*Kolom ini sesuai dengan fitur dalam model pelatihan*")
             st.info("Pastikan nilai Age, Height, dan Weight sudah benar sebelum prediksi")
         
         submitted = st.form_submit_button("🔮 Prediksi Status Gizi", use_container_width=True)
@@ -496,7 +501,7 @@ elif menu == "📈 Dashboard Monitoring":
     
     demo_data = pd.DataFrame({
         'Nama': [f"Anak-{i+1}" for i in range(n_samples)],
-        'Umur': np.random.randint(0, 60, n_samples),
+        'Umur (bulan)': np.random.randint(0, 60, n_samples),
         'Risiko': np.random.choice(['Rendah', 'Sedang', 'Tinggi'], n_samples, p=[0.5, 0.3, 0.2]),
         'Wilayah': np.random.choice(['Aceh Besar', 'Banda Aceh', 'Aceh Utara', 'Aceh Barat', 'Pidie'], n_samples),
         'Status_Gizi': np.random.choice(['Normal', 'Gizi Kurang', 'Gizi Buruk'], n_samples, p=[0.6, 0.25, 0.15])
