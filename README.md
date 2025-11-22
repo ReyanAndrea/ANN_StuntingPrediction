@@ -25,12 +25,15 @@ Stunting masih menjadi permasalahan gizi utama di Indonesia. Berdasarkan data Ke
 - 🏥 Intervensi sering dilakukan **terlambat**, bukan secara preventif
 
 ### Masalah Utama:
+
 1. Pencegahan masih dilakukan secara manual tanpa analisis prediktif
 2. Data gizi dan sosial ekonomi belum dimanfaatkan secara optimal
 3. Kurangnya sistem terintegrasi untuk deteksi dini
 
 ### Solusi:
+
 **NutriPredict** memanfaatkan machine learning untuk:
+
 - 🔍 Prediksi risiko stunting 6-12 bulan ke depan
 - 🎯 Memberikan rekomendasi intervensi personal
 - 📈 Membantu tenaga kesehatan melakukan deteksi dini lebih efektif
@@ -40,21 +43,25 @@ Stunting masih menjadi permasalahan gizi utama di Indonesia. Berdasarkan data Ke
 ## ✨ Fitur Utama
 
 ### 1. 🧠 Prediksi Berbasis ANN
+
 - Model Multi-Layer Perceptron (MLP) dengan 4 hidden layers
 - Mampu mengklasifikasi 4 kategori status gizi
 - Akurasi **75%** pada test set
 
 ### 2. 📊 Dashboard Interaktif (Streamlit)
+
 - Input data anak secara real-time
 - Visualisasi hasil prediksi
 - Grafik performa model
 - Confusion matrix & classification report
 
 ### 3. ⚖️ Handling Data Imbalance
+
 - Menggunakan **SMOTE** (Synthetic Minority Over-sampling Technique)
 - Class balancing untuk performa prediksi yang lebih adil
 
 ### 4. 📈 Evaluasi Model Lengkap
+
 - Confusion Matrix
 - Classification Report (Precision, Recall, F1-Score)
 - Training History Visualization
@@ -65,22 +72,26 @@ Stunting masih menjadi permasalahan gizi utama di Indonesia. Berdasarkan data Ke
 ## 🛠️ Teknologi
 
 ### Core Technologies:
+
 - **Python 3.10** - Bahasa pemrograman utama
 - **TensorFlow/Keras 2.20** - Deep learning framework
 - **Streamlit** - Web application framework
 
 ### Data Processing & ML:
+
 - **Pandas** - Data manipulation
 - **NumPy** - Numerical computing
 - **Scikit-learn** - Machine learning utilities
 - **Imbalanced-learn** - SMOTE implementation
 
 ### Visualization:
+
 - **Matplotlib** - Static plotting
 - **Seaborn** - Statistical visualization
 - **Plotly** - Interactive charts
 
 ### Model Persistence:
+
 - **Joblib** - Model serialization
 - **Pickle** - Data serialization
 
@@ -91,6 +102,7 @@ Stunting masih menjadi permasalahan gizi utama di Indonesia. Berdasarkan data Ke
 **Sumber:** Indonesian Children Medical & Food Nutrition
 
 ### Karakteristik Dataset:
+
 - **Jumlah Data:** 100 samples
 - **Fitur Input:**
   - `Name` (String) - Nama anak
@@ -106,6 +118,7 @@ Stunting masih menjadi permasalahan gizi utama di Indonesia. Berdasarkan data Ke
     - Stunting
 
 ### Distribusi Data (After SMOTE):
+
 - Normal: 25%
 - Overweight: 25%
 - Stunting: 25%
@@ -130,6 +143,7 @@ Output Layer (4 neurons) + Softmax
 ```
 
 ### Hyperparameters:
+
 - **Optimizer:** Adam
 - **Loss Function:** Sparse Categorical Crossentropy
 - **Metrics:** Accuracy
@@ -138,6 +152,7 @@ Output Layer (4 neurons) + Softmax
 - **Validation Split:** 20%
 
 ### Training Configuration:
+
 - **Data Split:** 80% Training, 20% Testing
 - **Feature Scaling:** StandardScaler
 - **Label Encoding:** LabelEncoder
@@ -148,17 +163,20 @@ Output Layer (4 neurons) + Softmax
 ## 💻 Instalasi
 
 ### 1. Clone Repository
+
 ```bash
 git clone https://github.com/ReyanAndrea/ANN_StuntingPrediction.git
 cd ANN_Stunting_Prediction
 ```
 
 ### 2. Install Dependencies
+
 ```bash
-python -m pip install pandas numpy matplotlib seaborn scikit-learn imbalanced-learn tensorflow joblib streamlit plotly pillow
+python pip install pandas numpy matplotlib seaborn scikit-learn imbalanced-learn tensorflow joblib streamlit plotly pillow
 ```
 
 ### 3. Verifikasi Instalasi
+
 ```bash
 python --version  # Should be Python 3.10+
 python -c "import tensorflow; print(tensorflow.__version__)"
@@ -177,6 +195,7 @@ python train_model.py
 ```
 
 **Output yang dihasilkan:**
+
 - `nutripredict_model.h5` - Trained model
 - `scaler.pkl` - Feature scaler
 - `label_encoders.pkl` - Label encoders
@@ -200,8 +219,9 @@ Aplikasi akan terbuka di browser pada `http://localhost:8500`
 ### 3. Melakukan Prediksi
 
 Di aplikasi web:
+
 1. Pilih jenis kelamin anak
-2. Input usia (1-12 bulan)
+2. Input usia (1-60 bulan)
 3. Input tinggi badan (cm)
 4. Input berat badan (kg)
 5. Klik tombol **"🔮 Prediksi Status Gizi"**
@@ -212,6 +232,7 @@ Di aplikasi web:
 ## 📊 Hasil & Performa
 
 ### Overall Performance:
+
 - **Accuracy:** 75.00%
 - **Average Precision:** 77.50%
 - **Average Recall:** 75.00%
@@ -219,12 +240,12 @@ Di aplikasi web:
 
 ### Performance per Class:
 
-| Class | Precision | Recall | F1-Score | Support |
-|-------|-----------|--------|----------|---------|
-| **Normal** | 66.67% | 66.67% | 66.67% | 6 |
-| **Overweight** | 83.33% | 83.33% | 83.33% | 6 |
-| **Stunting** | 100.00% | 75.00% | 85.71% | 4 |
-| **Underweight** | 60.00% | 75.00% | 66.67% | 4 |
+| Class           | Precision | Recall | F1-Score | Support |
+| --------------- | --------- | ------ | -------- | ------- |
+| **Normal**      | 66.67%    | 66.67% | 66.67%   | 6       |
+| **Overweight**  | 83.33%    | 83.33% | 83.33%   | 6       |
+| **Stunting**    | 100.00%   | 75.00% | 85.71%   | 4       |
+| **Underweight** | 60.00%    | 75.00% | 66.67%   | 4       |
 
 ### Confusion Matrix:
 
@@ -238,6 +259,7 @@ Actual Normal    4        1          0          1
 ```
 
 ### Key Insights:
+
 - ✅ **Stunting detection** memiliki precision tertinggi (100%)
 - ✅ **Overweight detection** memiliki performa seimbang (83.33%)
 - ⚠️ **False negatives pada Stunting:** 1 kasus (perlu perhatian khusus)
@@ -249,12 +271,12 @@ Actual Normal    4        1          0          1
 
 Proyek ini dikembangkan oleh mahasiswa **Jurusan Informatika, Fakultas MIPA, Universitas Syiah Kuala**:
 
-| Nama | NIM |
-|------|-----|
-| **Reyan Andrea** | 2208107010014 |
-| **Shafa Disya Aulia** | 2308107010002 |
+| Nama                          | NIM           |
+| ----------------------------- | ------------- |
+| **Reyan Andrea**              | 2208107010014 |
+| **Shafa Disya Aulia**         | 2308107010002 |
 | **Dea Zasqia Pasaribu Malau** | 2308107010004 |
-| **Tasya Zahrani** | 2308107010006 |
+| **Tasya Zahrani**             | 2308107010006 |
 
 **Mata Kuliah:** Kecerdasan Artificial  
 **Tahun:** 2025
@@ -263,20 +285,19 @@ Proyek ini dikembangkan oleh mahasiswa **Jurusan Informatika, Fakultas MIPA, Uni
 
 ## 📚 Referensi
 
-1. **Kementerian Kesehatan RI.** (2023). *Profil Kesehatan Indonesia 2023*. Jakarta: Kemenkes RI.
+1. **Kementerian Kesehatan RI.** (2023). _Profil Kesehatan Indonesia 2023_. Jakarta: Kemenkes RI.
 
-2. **Putri, R., & Ardiansyah, M.** (2022). Penerapan Artificial Neural Network untuk Prediksi Gizi Anak Balita. *Jurnal Teknologi Informasi dan Kesehatan*, 10(2), 45–52.
+2. **Putri, R., & Ardiansyah, M.** (2022). Penerapan Artificial Neural Network untuk Prediksi Gizi Anak Balita. _Jurnal Teknologi Informasi dan Kesehatan_, 10(2), 45–52.
 
-3. **Ardi, F., Sari, D., & Nugroho, A.** (2021). Penerapan Artificial Neural Network untuk Prediksi Penyakit Kronis. *Jurnal Teknologi Kesehatan*, 8(2), 44–51.
+3. **Ardi, F., Sari, D., & Nugroho, A.** (2021). Penerapan Artificial Neural Network untuk Prediksi Penyakit Kronis. _Jurnal Teknologi Kesehatan_, 8(2), 44–51.
 
-4. **Haykin, S.** (2009). *Neural Networks and Learning Machines* (3rd ed.). Pearson Education.
+4. **Haykin, S.** (2009). _Neural Networks and Learning Machines_ (3rd ed.). Pearson Education.
 
-5. **WHO.** (2021). *Child Growth Standards*. Geneva: World Health Organization.
+5. **WHO.** (2021). _Child Growth Standards_. Geneva: World Health Organization.
 
-6. **UNICEF.** (2020). *State of the World's Children 2020: Children, Food and Nutrition*. New York: UNICEF.
+6. **UNICEF.** (2020). _State of the World's Children 2020: Children, Food and Nutrition_. New York: UNICEF.
 
 ---
-
 
 ## 🙏 Acknowledgments
 
