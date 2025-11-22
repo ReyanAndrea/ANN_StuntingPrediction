@@ -85,7 +85,7 @@ def load_model_artifacts():
 model, scaler, label_encoders, target_encoder, feature_names, metrics = load_model_artifacts()
 
 # ==================== SIDEBAR ====================
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/2913/2913133.png", width=100)
+st.sidebar.image("logo_informatika.png", width=100)
 st.sidebar.title("🎯 NutriPredict")
 st.sidebar.markdown("**Sistem Prediksi Stunting dengan ANN**")
 st.sidebar.markdown("---")

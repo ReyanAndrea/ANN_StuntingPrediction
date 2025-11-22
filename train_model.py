@@ -368,5 +368,4 @@ print(f"   Accuracy: {accuracy:.4f} ({accuracy*100:.2f}%)")
 print(f"   Avg Precision: {precision.mean():.4f}")
 print(f"   Avg Recall: {recall.mean():.4f}")
 print(f"   Avg F1-Score: {f1.mean():.4f}")
-print("\n🎯 Next Step: Run streamlit_app.py untuk demo prediksi!")
 
