@@ -361,7 +361,7 @@ joblib.dump(metrics, 'metrics.pkl')
 print("💾 Saved: metrics.pkl")
 
 print("\n" + "=" * 60)
-print("✅ TRAINING COMPLETED SUCCESSFULLY!")
+print("✅ TRAINING SELESAI!!")
 print("=" * 60)
 print(f"\n📊 Final Results:")
 print(f"   Accuracy: {accuracy:.4f} ({accuracy*100:.2f}%)")
