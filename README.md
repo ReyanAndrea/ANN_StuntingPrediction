@@ -621,7 +621,6 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 
 ### Hubungi Kami
 
-- **Email**: reyanandrea@students.unsyiah.ac.id
 - **GitHub**: [@ReyanAndrea](https://github.com/ReyanAndrea)
 - **Repository**: [ANN_StuntingPrediction](https://github.com/ReyanAndrea/ANN_StuntingPrediction)
 
