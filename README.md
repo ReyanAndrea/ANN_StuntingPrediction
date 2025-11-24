@@ -168,15 +168,14 @@ _________________________________________________________________
 
 ### Hyperparameters
 
-```python
-optimizer = Adam(learning_rate=0.001)
-loss = 'categorical_crossentropy'
-metrics = ['accuracy']
-epochs = 150
-batch_size = 32
-validation_split = 0.2
-early_stopping_patience = 10
-```
+| Parameter         | Nilai                     |
+|-------------------|---------------------------|
+| Optimizer         | Adam (lr = 0.001)         |
+| Loss              | Categorical Crossentropy  |
+| Epochs            | 150                       |
+| Batch Size        | 32                        |
+| Validation Split  | 0.2                       |
+
 
 ### Training Configuration
 
