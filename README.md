@@ -242,15 +242,12 @@ python train_model.py
 
 **Output yang dihasilkan:**
 ```
-models/
 ├── nutripredict_model.h5      # Trained model weights
 ├── scaler.pkl                  # StandardScaler untuk normalisasi
 ├── label_encoders.pkl          # Encoder untuk Sex
 ├── target_encoder.pkl          # Encoder untuk Status
 ├── feature_names.pkl           # Nama fitur
-└── metrics.pkl                 # Performance metrics
-
-visualizations/
+├── metrics.pkl                 # Performance metrics
 ├── confusion_matrix.png        # Confusion matrix
 ├── training_history.png        # Training curves
 └── class_distribution.png      # Data distribution
@@ -289,9 +286,9 @@ import joblib
 import numpy as np
 
 # Load model dan preprocessing tools
-model = joblib.load('models/nutripredict_model.h5')
-scaler = joblib.load('models/scaler.pkl')
-label_encoder = joblib.load('models/label_encoders.pkl')
+model = joblib.load('nutripredict_model.h5')
+scaler = joblib.load('scaler.pkl')
+label_encoder = joblib.load('label_encoders.pkl')
 
 # Input data
 sex = 'Male'  # Male/Female
@@ -383,34 +380,25 @@ Underweight          0         0          0          4
 
 ```
 ANN_StuntingPrediction/
-│
-├── data/
-│   └── child_data_rev.csv              # Dataset anak
-│
-├── models/
-│   ├── nutripredict_model.h5           # Trained model
-│   ├── scaler.pkl                      # Feature scaler
-│   ├── label_encoders.pkl              # Categorical encoders
-│   ├── target_encoder.pkl              # Target encoder
-│   ├── feature_names.pkl               # Feature metadata
-│   └── metrics.pkl                     # Performance metrics
-│
-├── visualizations/
-│   ├── confusion_matrix.png            # Confusion matrix plot
-│   ├── training_history.png            # Training curves
-│   └── class_distribution.png          # Data distribution
-│
-├── src/
-│   ├── train_model.py                  # Model training script
-│   ├── preprocessing.py                # Data preprocessing
-│   ├── model.py                        # Model architecture
-│   └── evaluation.py                   # Model evaluation
-│
-├── streamlit_app.py                    # Web application
-├── requirements.txt                    # Python dependencies
-├── README.md                           # Documentation
-├── LICENSE                             # MIT License
-└── .gitignore                          # Git ignore file
+├── child_data_rev.csv              # Dataset anak
+├── nutripredict_model.h5           # Trained model
+├── scaler.pkl                      # Feature scaler
+├── label_encoders.pkl              # Categorical encoders
+├── target_encoder.pkl              # Target encoder
+├── feature_names.pkl               # Feature metadata
+├── metrics.pkl                     # Performance metrics
+├── confusion_matrix.png            # Confusion matrix plot
+├── training_history.png            # Training curves
+├── class_distribution.png          # Data distribution
+├── train_model.py                  # Model training script
+├── preprocessing.py                # Data preprocessing
+├── model.py                        # Model architecture
+├── evaluation.py                   # Model evaluation
+├── streamlit_app.py                # Web application
+├── requirements.txt                # Python dependencies
+├── README.md                       # Documentation
+├── LICENSE                         # MIT License
+└── .gitignore                      # Git ignore file
 ```
 
 ---
@@ -421,7 +409,7 @@ ANN_StuntingPrediction/
 
 ```python
 # Step 1: Data Cleaning
-df = pd.read_csv('data/child_data_rev.csv')
+df = pd.read_csv('child_data_rev.csv')
 df = df.dropna()  # Remove missing values
 df = df.drop_duplicates()  # Remove duplicates
 
