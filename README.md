@@ -231,39 +231,172 @@ Di aplikasi web:
 
 ## 📊 Hasil & Performa
 
-### Overall Performance:
+### 📝 Hasil Training Model
 
-- **Accuracy:** 75.00%
-- **Average Precision:** 77.50%
-- **Average Recall:** 75.00%
-- **Average F1-Score:** 75.60%
+Berikut adalah hasil training model menggunakan script `train_model2.py` dengan dataset 100 samples:
 
-### Performance per Class:
+#### 1️⃣ Class Distribution (After SMOTE)
+![Class Distribution](images/class_distribution.png)
 
-| Class           | Precision | Recall | F1-Score | Support |
-| --------------- | --------- | ------ | -------- | ------- |
-| **Normal**      | 66.67%    | 66.67% | 66.67%   | 6       |
-| **Overweight**  | 83.33%    | 83.33% | 83.33%   | 6       |
-| **Stunting**    | 100.00%   | 75.00% | 85.71%   | 4       |
-| **Underweight** | 60.00%    | 75.00% | 66.67%   | 4       |
+**Penjelasan:**
+- **Sebelum SMOTE:** Dataset imbalance dengan Normal (30%), Overweight (30%), Stunting (21%), Underweight (19%)
+- **Setelah SMOTE:** Semua kelas memiliki distribusi seimbang - masing-masing **24 samples (25%)**
+- **Total training data:** 96 samples (setelah balancing)
+- **Test data:** 20 samples (tidak di-balance, tetap natural distribution)
 
-### Confusion Matrix:
+---
+
+#### 2️⃣ Model Architecture
+![Model Architecture](images/model_architecture.png)
+
+**Penjelasan:**
+- **Input Layer:** 4 fitur (Sex, Age, Height, Weight)
+- **Hidden Layer 1:** 128 neurons + ReLU + Batch Normalization + Dropout (30%)
+- **Hidden Layer 2:** 64 neurons + ReLU + Batch Normalization + Dropout (30%)
+- **Hidden Layer 3:** 32 neurons + ReLU + Batch Normalization + Dropout (30%)
+- **Output Layer:** 4 neurons + Softmax (untuk 4 kelas)
+- **Total Parameters:** 12,004 (46.89 KB)
+- **Trainable Parameters:** 11,556 (45.14 KB)
+- **Teknik Regularization:** Batch Normalization untuk stabilitas + Dropout untuk mencegah overfitting
+
+---
+
+#### 3️⃣ Training History
+![Training History](images/training_history.png)
+
+**Penjelasan:**
+- **Total Epochs:** 150 (dengan Early Stopping)
+- **Best Epoch:** 137 (model weights di-restore dari epoch terbaik)
+- **Callbacks:**
+  - ✅ Early Stopping: patience=15 epochs
+  - ✅ ReduceLROnPlateau: mengurangi learning rate saat plateau
+- **Learning Rate:**
+  - Initial: 0.0003
+  - Reduced di epoch 94 → 0.00015
+  - Reduced di epoch 123 → 0.000075
+  - Reduced di epoch 142 → 0.0000375
+  - Final di epoch 147 → 0.00001875
+- **Validation Accuracy:** Stabil di 85% mulai epoch 56
+- **Training Accuracy:** Meningkat hingga ~91% di epoch akhir
+- **Overfitting Prevention:** Batch Normalization + Dropout berhasil mencegah overfitting berat
+
+---
+
+#### 4️⃣ Confusion Matrix
+![Confusion Matrix](images/confusion_matrix.png)
+
+**Penjelasan:**
+- **Total Test Samples:** 20
+- **Correctly Predicted:** 16/20 (80% accuracy)
+- **Incorrectly Predicted:** 4/20
+
+**Breakdown per Kelas:**
+- **Normal (6 samples):** 5 benar, 1 salah diprediksi sebagai Overweight
+- **Overweight (6 samples):** 4 benar, 2 salah diprediksi sebagai Normal
+- **Stunting (4 samples):** 3 benar, 1 salah diprediksi sebagai Underweight ⚠️
+- **Underweight (4 samples):** 4 benar, 0 salah ✅ Perfect!
+
+**Critical Finding:**
+- ⚠️ **1 anak Stunting** diprediksi sebagai Underweight (False Negative)
+- Ini berbahaya karena anak yang butuh intervensi stunting bisa terlewat!
+
+---
+
+#### 5️⃣ Evaluation Results
+![Evaluation Results](images/evaluation_results.png)
+
+**Penjelasan Metrics per Kelas:**
+
+| Class | Precision | Recall | F1-Score | Support | Interpretasi |
+|-------|-----------|--------|----------|---------|--------------|
+| **Normal** | 71.43% | 83.33% | 76.92% | 6 | Model cukup baik, sedikit over-predict Normal |
+| **Overweight** | 80.00% | 66.67% | 72.73% | 6 | Precision bagus, recall perlu ditingkatkan |
+| **Stunting** | 100.00% | 75.00% | 85.71% | 4 | Precision perfect! Tapi miss 1 kasus |
+| **Underweight** | 80.00% | 100.00% | 88.89% | 4 | Recall perfect! Tidak ada yang terlewat |
+
+**Overall Metrics:**
+- **Accuracy:** 80.00% (16/20 benar)
+- **Macro Average Precision:** 82.86%
+- **Macro Average Recall:** 81.25%
+- **Macro Average F1-Score:** 81.06%
+- **Weighted Average F1-Score:** 79.82%
+
+---
+
+#### 6️⃣ Final Training Results
+![Final Results](images/final_results.png)
+
+**Penjelasan:**
+- ✅ **Training berhasil** dengan akurasi 80% pada test set
+- ✅ **Model stabil** dan reproducible (SEED = 42)
+- ✅ **Tidak overfitting** (validation accuracy konsisten 85%)
+- ✅ **Class balancing** dengan SMOTE berhasil meningkatkan performa
+- ✅ **Best model weights** tersimpan dari epoch 137
+
+**Key Takeaways:**
+1. Model sangat baik untuk deteksi **Underweight** (100% recall)
+2. Model sangat presisi untuk deteksi **Stunting** (100% precision)
+3. Perlu improvement di recall untuk **Overweight** dan **Stunting**
+4. Model siap digunakan untuk screening awal, namun tetap perlu validasi medis
+
+---
+
+### 📈 Overall Performance Summary:
+
+- **Test Accuracy:** 80.00%
+- **Average Precision:** 82.86%
+- **Average Recall:** 81.25%
+- **Average F1-Score:** 81.06%
+- **Model Size:** 46.89 KB (sangat ringan!)
+- **Training Time:** ~2 menit (150 epochs)
+
+### 📊 Detailed Performance per Class:
+
+| Class           | Precision | Recall | F1-Score | Support | True Positive | False Positive | False Negative |
+| --------------- | --------- | ------ | -------- | ------- | ------------- | -------------- | -------------- |
+| **Normal**      | 71.43%    | 83.33% | 76.92%   | 6       | 5             | 2              | 1              |
+| **Overweight**  | 80.00%    | 66.67% | 72.73%   | 6       | 4             | 1              | 2              |
+| **Stunting**    | 100.00%   | 75.00% | 85.71%   | 4       | 3             | 0              | 1              |
+| **Underweight** | 80.00%    | 100.00%| 88.89%   | 4       | 4             | 1              | 0              |
+
+---
+
+### 🎯 Key Insights & Recommendations:
+
+#### Kekuatan Model:
+- ✅ **Stunting Precision 100%** - Ketika model prediksi stunting, selalu benar!
+- ✅ **Underweight Recall 100%** - Tidak ada kasus underweight yang terlewat
+- ✅ **Overall Accuracy 80%** - Performa baik untuk dataset kecil
+- ✅ **Model Ringan** - Hanya 46.89 KB, cocok untuk deployment mobile/web
+
+#### Area yang Perlu Improvement:
+- ⚠️ **Overweight Recall 66.67%** - 2 dari 6 kasus overweight terlewat
+- ⚠️ **Stunting Recall 75%** - 1 kasus stunting kritis tidak terdeteksi
+- ⚠️ **Dataset Kecil** - Hanya 100 samples, perlu lebih banyak data untuk generalisasi
+
+#### Rekomendasi Penggunaan:
+1. **✅ Cocok untuk:** Screening awal dan deteksi dini risiko stunting
+2. **✅ Kelebihan:** Fast prediction, ringan, dan mudah di-deploy
+3. **⚠️ Limitasi:** Tetap perlu validasi medis profesional untuk diagnosis final
+4. **🔄 Next Steps:** Kumpulkan lebih banyak data untuk meningkatkan recall
+
+---
+
+### 📊 Confusion Matrix Detail:
 
 ```
               Predicted
               Normal  Overweight  Stunting  Underweight
-Actual Normal    4        1          0          1
-    Overweight   1        5          0          0
+Actual Normal    5        1          0          0
+    Overweight   2        4          0          0
     Stunting     0        0          3          1
-    Underweight  1        0          0          3
+    Underweight  0        0          0          4
 ```
 
-### Key Insights:
-
-- ✅ **Stunting detection** memiliki precision tertinggi (100%)
-- ✅ **Overweight detection** memiliki performa seimbang (83.33%)
-- ⚠️ **False negatives pada Stunting:** 1 kasus (perlu perhatian khusus)
-- 📈 Model cukup reliable untuk screening awal
+**Catatan:**
+- Angka diagonal (5, 4, 3, 4) = prediksi benar
+- Off-diagonal = kesalahan prediksi
+- Total benar: 5+4+3+4 = **16/20 (80%)**
 
 ---
 
