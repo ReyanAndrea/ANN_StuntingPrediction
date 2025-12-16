@@ -544,9 +544,9 @@ Proyek ini dikembangkan oleh mahasiswa **Informatika, FMIPA, Universitas Syiah K
 | Nama | NIM | Role |
 |------|-----|------|
 | **Reyan Andrea** | 2208107010014 | Lead Developer & ML Engineer |
-| **Shafa Disya Aulia** | 2308107010002 | Data Analyst & Preprocessing |
-| **Dea Zasqia Pasaribu Malau** | 2308107010004 | Model Architecture & Training |
-| **Tasya Zahrani** | 2308107010006 | UI/UX & Web Development |
+| **Shafa Disya Aulia** | 2308107010002 | UI/UX & Web Development  |
+| **Dea Zasqia Pasaribu Malau** | 2308107010004 | Model Analysis & Writer |
+| **Tasya Zahrani** | 2308107010006 | Data Analyst & Preprocessing |
 
 **Mata Kuliah**: Kecerdasan Artificial  
 **Semester**: Genap 2024/2025  
